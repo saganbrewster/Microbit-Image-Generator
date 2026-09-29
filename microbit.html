@@ -1,0 +1,85 @@
+
+<html>
+    <body>
+        <form id="inputForm">
+        <div class="row">
+            <input type="checkbox" id="11">
+            <input type="checkbox" id="12">
+            <input type="checkbox" id="13">
+            <input type="checkbox" id="14">
+            <input type="checkbox" id="15">
+        </div>
+        <div class="row">
+            <input type="checkbox" id="21">
+            <input type="checkbox" id="22">
+            <input type="checkbox" id="23">
+            <input type="checkbox" id="24">
+            <input type="checkbox" id="25">
+        </div>
+        <div class="row">
+            <input type="checkbox" id="31">
+            <input type="checkbox" id="32">
+            <input type="checkbox" id="33">
+            <input type="checkbox" id="34">
+            <input type="checkbox" id="35">
+        </div>
+        <div class="row">
+            <input type="checkbox" id="41">
+            <input type="checkbox" id="42">
+            <input type="checkbox" id="43">
+            <input type="checkbox" id="44">
+            <input type="checkbox" id="45">
+        </div>
+        <div class="row">
+            <input type="checkbox" id="51">
+            <input type="checkbox" id="52">
+            <input type="checkbox" id="53">
+            <input type="checkbox" id="54">
+            <input type="checkbox" id="55">
+        </div>
+        <button type="submit">Output</button>
+        </form>
+        <div id="output" style="display: none;"></div>
+    </body>
+
+    <script>
+
+        document.getElementById('inputForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const buttonGrid = []
+
+            for (let row = 1; row <= 5; row++) {
+                const currentRow = [];
+                
+                for (let col = 1; col <= 5; col++) {
+                    const buttonId = `${row}${col}`; 
+                    const buttonElement = document.getElementById(buttonId);
+                    
+                    const value = buttonElement.checked ? 9 : 0;
+                    currentRow.push(value);
+                }
+                
+                buttonGrid.push(currentRow);
+            }
+
+            console.log(buttonGrid)
+
+            //convert array to microbit image format
+            /*
+            Image('00000:'
+                  '00000:'
+                  '00000:'
+                  '00000:'
+                  '00000:')
+            */
+
+            const output = `Image(\'${buttonGrid[0]}\:\'\'${buttonGrid[1]}\:\'\'${buttonGrid[2]}\:\'\'${buttonGrid[3]}\:\'\'${buttonGrid[4]}\:\')`
+            console.log(output)
+            const outputDiv = document.getElementById('output');
+            outputDiv.textContent = output.replaceAll(',', '');
+            outputDiv.style.display = 'block';
+
+
+        });
+    </script>
+</html>
