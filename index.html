@@ -22,6 +22,10 @@
                 border-color: #ff002f;
             }
 
+            .output {
+                white-space: pre-line;
+            }
+
             button {
                 background-color: #125fa2;
                 color: #f9f7e1;
@@ -34,10 +38,56 @@
                 box-shadow: 0 4px 6px rgba(0, 112, 243, 0.2);
             }
 
-            .output {
+            body {
                 font-family: 'Ubuntu', sans-serif;
                 font-weight: 500;
                 
+                
+            }
+
+            #frames-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .frame-card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                font-family: sans-serif;
+                font-size: 12px;
+                color: #888;
+            }
+
+            .rendered-grid {
+                display: grid;
+                grid-template-columns: repeat(5, 20px);
+                gap: 2px;
+                padding: 4px;
+                border-radius: 6px;
+            }
+
+            .rendered-grid .cell {
+                width: 20px;
+                height: 20px;
+                box-sizing: border-box;
+                border-radius: 4px;
+            }
+
+            .rendered-grid .cell.inactive {
+                border: 2px solid #555;
+                background-color: transparent;
+            }
+
+            .rendered-grid .cell.active {
+                border: 2px solid #ff002f;
+                background-color: #ff002f;
+            }
+
+            dialog {
+                border-radius: 12px;
             }
 
         </style>
@@ -81,15 +131,33 @@
         </div>
         <button type="submit">Output</button>
         <button type="reset">Reset</button>
-        </form>
+        <button type="button" id="export">Export</button>
+        </form> 
         <div id="output" class="output" style="display: none;"></div>
+        <div id="frames-container"></div>
+        <dialog id="myDialog">
+            <form method="dialog">
+                <h3>Enter framerate</h3>
+                <input type="text" id="userInput" placeholder="Framerate (ms)" />
+                <div>
+                <button id="cancelBtn" value="cancel">Cancel</button>
+                <button id="submitBtn" value="submit">Export</button>
+                </div>
+            </form>
+        </dialog>
     </body>
 
     <script>
+        let frames = [];
+        let activeFrameIndex = -1;
+        let animationInterval = null;
+        let frameRate;
+
+
 
         document.getElementById('inputForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const buttonGrid = []
+            const buttonGrid = [];
 
             for (let row = 1; row <= 5; row++) {
                 const currentRow = [];
@@ -105,7 +173,7 @@
                 buttonGrid.push(currentRow);
             }
 
-            console.log(buttonGrid)
+            console.log(buttonGrid);
 
             //convert array to microbit image format
             /*
@@ -116,13 +184,77 @@
                   '00000:')
             */
 
-            const output = `Image(\'${buttonGrid[0]}\:\'\'${buttonGrid[1]}\:\'\'${buttonGrid[2]}\:\'\'${buttonGrid[3]}\:\'\'${buttonGrid[4]}\:\')`
-            console.log(output)
+            const output = `Image(\'${buttonGrid[0]}\:\'\'${buttonGrid[1]}\:\'\'${buttonGrid[2]}\:\'\'${buttonGrid[3]}\:\'\'${buttonGrid[4]}\:\')`;
+            console.log(output);
             const outputDiv = document.getElementById('output');
             outputDiv.textContent = output.replaceAll(',', '');
             outputDiv.style.display = 'block';
+            saveAndDisplayFrame(buttonGrid);
 
 
         });
+
+        document.getElementById('export').addEventListener('click', (event) => {
+
+            myDialog.showModal();
+
+        });
+
+        document.getElementById('submitBtn').addEventListener('click', (event) => {
+
+            frameRate = document.getElementById('userInput').value;
+            console.log(frameRate);
+            let output = ``;
+            let line = ``;
+            for (let i = 0; i < frames.length; i++) {
+                //each frame
+                frame = frames[i];
+                output += `display.show(Image(\'${frame[0]}\:\'\'${frame[1]}\:\'\'${frame[2]}\:\'\'${frame[3]}\:\'\'${frame[4]}\:\'))\n\sleep(${frameRate})\n`;
+                // frames = [[[x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x]], [[x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x]]]
+
+                
+            }
+            console.log("output: ", output)
+            outputDiv = document.getElementById('output');
+            outputDiv.textContent = output;
+            outputDiv.style.display = 'block';
+
+        });
+
+        
+
+
+        function saveAndDisplayFrame(matrix, containerId = 'frames-container') {
+            if (frames.length >= 20) {
+                alert("Maximum limit of 20 frames reached!");
+                return;
+            }
+
+            const frameCopy = matrix.map(row => [...row]);
+            frames.push(frameCopy);
+            const gridContainer = document.createElement('div');
+            gridContainer.className = 'rendered-grid';
+
+            frameCopy.forEach(row => {
+                row.forEach(value => {
+                const cell = document.createElement('div');
+                cell.className = `cell ${value === 9 ? 'active' : 'inactive'}`;
+                gridContainer.appendChild(cell);
+                });
+            });
+            const frameCard = document.createElement('div');
+            frameCard.className = 'frame-card';
+            
+            const label = document.createElement('span');
+            label.textContent = `#${frames.length}`;
+
+            frameCard.appendChild(gridContainer);
+            frameCard.appendChild(label);
+            const displayContainer = document.getElementById(containerId);
+            if (displayContainer) {
+                displayContainer.appendChild(frameCard);
+            }
+        }
+        
     </script>
 </html>
