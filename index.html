@@ -218,7 +218,7 @@
             for (let i = 0; i < frames.length; i++) {
                 //each frame
                 frame = frames[i];
-                output += `display.show(Image(\'${frame[0]}\:\'\'${frame[1]}\:\'\'${frame[2]}\:\'\'${frame[3]}\:\'\'${frame[4]}\:\'))\n\sleep(${frameRate})\n`;
+                output += `display.show(Image(\'${frame[0].join('')}\:\'\'${frame[1].join('')}\:\'\'${frame[2].join('')}\:\'\'${frame[3].join('')}\:\'\'${frame[4].join('')}\:\'))\n\sleep(${frameRate})\n`;
                 // frames = [[[x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x]], [[x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x]]]
 
                 
