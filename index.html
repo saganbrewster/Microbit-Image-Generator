@@ -234,10 +234,6 @@
 
 
         function saveAndDisplayFrame(matrix, containerId = 'frames-container') {
-            if (frames.length >= 20) {
-                alert("Maximum limit of 20 frames reached!");
-                return;
-            }
 
             const frameCopy = matrix.map(row => [...row]);
             frames.push(frameCopy);
