@@ -1,6 +1,9 @@
 
 <html>
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://gstatic.com" crossorigin>
+        <link href="https://googleapis.com" rel="stylesheet">  
         <style>
             .row input[type="checkbox"] {
                 appearance: none;
@@ -29,6 +32,12 @@
                 border-radius: 8px;
                 cursor: pointer;
                 box-shadow: 0 4px 6px rgba(0, 112, 243, 0.2);
+            }
+
+            .output {
+                font-family: 'Ubuntu', sans-serif;
+                font-weight: 500;
+                
             }
 
         </style>
@@ -73,7 +82,7 @@
         <button type="submit">Output</button>
         <button type="reset">Reset</button>
         </form>
-        <div id="output" style="display: none;"></div>
+        <div id="output" class="output" style="display: none;"></div>
     </body>
 
     <script>
