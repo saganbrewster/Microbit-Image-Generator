@@ -18,8 +18,8 @@
                 -webkit-appearance: none;
                 cursor: pointer;
                 margin: 0px;
-                width: 20px;
-                height: 20px;
+                width: 40px;
+                height: 40px;
                 border: 2px solid #555;
                 border-radius: 4px;
 
@@ -38,7 +38,7 @@
                 background-color: #125fa2;
                 color: #f9f7e1;
                 padding: 4px 8px;
-                font-size: 10px;
+                font-size: 17.5px;
                 font-weight: 600;
                 border: none;
                 border-radius: 8px;
@@ -49,8 +49,10 @@
             body {
                 font-family: 'Ubuntu', sans-serif;
                 font-weight: 500;
-                
-                
+            }
+
+            h1 {
+                font-size: 18px;
             }
 
             #frames-container {
@@ -98,6 +100,12 @@
                 border-radius: 12px;
             }
 
+            #copy { 
+                background-color: #f9f7e1;
+                color: #125fa2;
+                font-style: italic;
+            }
+
         </style>
     </head>
     <body>
@@ -141,6 +149,7 @@
         <button type="submit">Output</button>
         <button type="reset">Reset</button>
         <button type="button" id="export">Export</button>
+        <br><br><button type="button" id="copy" hidden>Copy all</button>
         </form> 
         <div id="output" class="output" style="display: none;"></div>
         <div id="frames-container"></div>
@@ -227,6 +236,23 @@
             outputDiv = document.getElementById('output');
             outputDiv.textContent = output;
             outputDiv.style.display = 'block';
+            document.getElementById('copy').hidden = false;
+
+        });
+
+        document.getElementById('copy').addEventListener('click', (event) => {
+
+            navigator.clipboard.writeText(document.getElementById('output').innerText)
+                .then(() => {
+                    button = document.getElementById('copy')
+                    button.innerText = "Copied";
+                    button.style.backgroundColor = "#7FF582"
+
+                    setTimeout(() => {
+                    button.innerText = "Copy All";
+                    button.style.backgroundColor = ""; 
+                }, 2000);
+            })
 
         });
 
