@@ -222,19 +222,19 @@
 
             frameRate = document.getElementById('userInput').value;
             console.log(frameRate);
-            let output = ``;
+            let output = [];
             let line = ``;
             for (let i = 0; i < frames.length; i++) {
                 //each frame
                 frame = frames[i];
-                output += `display.show(Image(\'${frame[0].join('')}\:\'\'${frame[1].join('')}\:\'\'${frame[2].join('')}\:\'\'${frame[3].join('')}\:\'\'${frame[4].join('')}\:\'))\n\sleep(${frameRate})\n`;
+                output.push(`(Image(\'${frame[0].join('')}\:\'\'${frame[1].join('')}\:\'\'${frame[2].join('')}\:\'\'${frame[3].join('')}\:\'\'${frame[4].join('')}\:\'))`);
                 // frames = [[[x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x]], [[x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x], [x,x,x,x,x]]]
 
                 
             }
             console.log("output: ", output)
             outputDiv = document.getElementById('output');
-            outputDiv.textContent = output;
+            outputDiv.textContent = `frames = [${output}]\ndisplay.show(frames, frame_delay=${frameRate})`;
             outputDiv.style.display = 'block';
             document.getElementById('copy').hidden = false;
 
