@@ -219,7 +219,11 @@
         });
 
         document.getElementById('submitBtn').addEventListener('click', (event) => {
-
+            if (frameRate < 20) {
+                alert("Framerate must be at least 20");
+                return;
+            }
+                
             frameRate = document.getElementById('userInput').value;
             console.log(frameRate);
             let output = [];
